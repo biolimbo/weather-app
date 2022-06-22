@@ -1,24 +1,53 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./index.css";
-import App from "./App";
+
 import Navbar from "./components/Navbar";
+import PrivateRoute from "./routes/PrivateRoutes";
+
+import Reports from "./routes/Reports";
+import Alerts from "./routes/Alerts";
+
+import Signin from "./routes/Signin";
+import Signup from "./routes/Signup";
+import Reset from "./routes/Reset";
 
 import reportWebVitals from "./reportWebVitals";
+
+import { AuthProvider } from "./contexts/Auth";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<React.StrictMode>
-		<div
-			id="body"
-			className="bg-gray-300 bg-gradient-to-t dark:from-cyan-500 dark:to-blue-500"
-		>
-			<Navbar />
-			<BrowserRouter>
-				<App />
-			</BrowserRouter>
-		</div>
+		<AuthProvider>
+			<div id="body" className="bg-gradient-to-t from-cyan-500 to-blue-500">
+				<Router>
+					<Navbar />
+					<Routes>
+						<Route
+							path="/"
+							element={
+								<PrivateRoute>
+									<Reports />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="/alerts"
+							element={
+								<PrivateRoute>
+									<Alerts />
+								</PrivateRoute>
+							}
+						/>
+						<Route path="/signin" element={<Signin />} />
+						<Route path="/signup" element={<Signup />} />
+						<Route path="/reset" element={<Reset />} />
+					</Routes>
+				</Router>
+			</div>
+		</AuthProvider>
 	</React.StrictMode>
 );
 

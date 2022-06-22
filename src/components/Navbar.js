@@ -1,9 +1,30 @@
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { NavLink } from "react-router-dom";
+
+import { AuthContext } from "../contexts/Auth";
+
+function CustomLink({ children, to, className, activeClassName, ...props }) {
+	return (
+		<div>
+			<NavLink
+				to={to}
+				className={({ isActive }) =>
+					`${className} ${isActive ? activeClassName : ""}`
+				}
+				{...props}
+			>
+				{children}
+			</NavLink>
+		</div>
+	);
+}
 
 function Navbar() {
+	const { user } = useContext(AuthContext);
+
 	return (
 		<header>
-			<nav className="bg-white/[.65] border-gray-200 px-3 sm:px-6 py-4 rounded-b-lg dark:bg-sky-700/[.65] backdrop-blur-md">
+			<nav className="px-3 sm:px-6 py-4 rounded-b-lg bg-sky-700/[.65] backdrop-blur-md">
 				<div className="container flex flex-wrap justify-between items-center mx-auto">
 					<a href="/" className="flex items-center">
 						<img
@@ -16,51 +37,56 @@ function Navbar() {
 						</span>
 					</a>
 					<div className="flex items-center md:order-2">
-						<button
-							type="button"
-							className="flex mr-3 text-sm bg-sky-700 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-							id="user-menu-button"
-							aria-expanded="false"
-							data-dropdown-toggle="dropdown"
-						>
-							<span className="sr-only">Open user menu</span>
-							<img
-								className="w-8 h-8 rounded-full"
-								src="/docs/images/people/profile-picture-3.jpg"
-								alt="user avatar"
-							/>
-						</button>
-						<div
-							className="hidden z-50 my-4 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
-							id="dropdown"
-						>
-							<div className="py-3 px-4">
-								<span className="block text-sm text-gray-900 dark:text-white">
-									Bonnie Green
-								</span>
-								<span className="block text-sm font-medium text-gray-500 truncate dark:text-gray-400">
-									name@weather-app.ga
-								</span>
+						{user && (
+							<div className="flex items-center">
+								<button
+									type="button"
+									className="flex mr-3 text-sm bg-sky-700 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 "
+									id="user-menu-button"
+									aria-expanded="false"
+									data-dropdown-toggle="dropdown"
+								>
+									<span className="sr-only">Open user menu</span>
+									<img
+										className="w-8 h-8 rounded-full"
+										src={user.photoURL ?? "/images/icons/user.svg"}
+										alt="user avatar"
+									/>
+								</button>
+								<div
+									className="hidden z-50 my-4 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+									id="dropdown"
+								>
+									<div className="py-3 px-4">
+										<span className="block text-sm text-gray-900 dark:text-white">
+											Bonnie Green
+										</span>
+										<span className="block text-sm font-medium text-gray-500 truncate dark:text-gray-400">
+											name@weather-app.ga
+										</span>
+									</div>
+									<ul className="py-1" aria-labelledby="dropdown">
+										<li>
+											<a
+												href="#"
+												className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+											>
+												Settings
+											</a>
+										</li>
+										<li>
+											<a
+												href="#"
+												className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+											>
+												Sign out
+											</a>
+										</li>
+									</ul>
+								</div>
 							</div>
-							<ul className="py-1" aria-labelledby="dropdown">
-								<li>
-									<a
-										href="#"
-										className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-									>
-										Settings
-									</a>
-								</li>
-								<li>
-									<a
-										href="#"
-										className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-									>
-										Sign out
-									</a>
-								</li>
-							</ul>
-						</div>
+						)}
+
 						<button
 							data-collapse-toggle="mobile-menu-2"
 							type="button"
@@ -101,20 +127,22 @@ function Navbar() {
 					>
 						<ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
 							<li>
-								<a
-									href="#"
-									className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+								<CustomLink
+									to="/"
+									className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+									activeClassName="dark:!text-white"
 								>
 									Reports
-								</a>
+								</CustomLink>
 							</li>
 							<li>
-								<a
-									href="#"
+								<CustomLink
+									to="/alerts"
 									className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+									activeClassName="dark:!text-white"
 								>
 									Alerts
-								</a>
+								</CustomLink>
 							</li>
 						</ul>
 					</div>
