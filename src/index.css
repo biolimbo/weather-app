@@ -19,3 +19,9 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
 		monospace;
 }
+
+@layer components {
+	.nav-link {
+		@apply block py-2 pr-4 pl-3 text-lg font-semibold drop-shadow text-gray-300 border-t border-gray-100 hover:bg-gray-50 active:text-sky-700 md:hover:bg-transparent md:border-0 md:hover:text-white md:active:text-white md:p-0;
+	}
+}
