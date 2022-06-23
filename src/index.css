@@ -74,6 +74,6 @@ code {
 	}
 
 	.night-container {
-		@apply bg-gradient-to-b from-slate-900/90 to-sky-800/60 text-white;
+		@apply bg-gradient-to-b from-slate-900/90 to-sky-800/70 text-white;
 	}
 }
