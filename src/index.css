@@ -22,18 +22,23 @@ code {
 
 @layer components {
 	.nav-link {
-		@apply block py-2 px-4 text-lg font-semibold drop-shadow text-gray-300 border-t border-gray-100 hover:bg-gray-50 hover:text-sky-700 active:text-sky-700 md:hover:bg-transparent md:border-0 md:hover:text-white md:active:text-white;
+		@apply text-left w-full block py-2 px-4 text-sm hover:bg-gray-600 text-gray-200 hover:text-white;
 	}
 	.nav-link.active {
-		@apply block py-2 px-4 text-lg font-semibold drop-shadow border-t border-gray-100 active:text-sky-700 md:border-0 hover:text-sky-700 md:bg-transparent md:text-white md:hover:text-white bg-gray-50 text-sky-700;
+		@apply bg-gray-600 text-white;
 	}
 
-	h1 {
+	h1,
+	.h1 {
 		@apply text-2xl font-bold mb-0;
 	}
 
+	h2 {
+		@apply text-xl font-bold mb-0;
+	}
+
 	.btn-light {
-		@apply bg-gray-100 border-gray-100 hover:bg-gray-200 w-fit rounded-lg px-4 py-2;
+		@apply bg-gray-100 border-gray-100 hover:bg-gray-200 w-fit rounded-lg px-4 py-2 transition-all duration-200 ease-in-out;
 	}
 
 	.btn-light.active {
@@ -41,7 +46,7 @@ code {
 	}
 
 	.btn-sky-600 {
-		@apply bg-sky-600 hover:bg-sky-800 hover:drop-shadow-md w-fit rounded-lg px-4 py-2 text-white font-semibold;
+		@apply bg-sky-600 hover:bg-sky-800 hover:drop-shadow-md w-fit rounded-lg px-4 py-2 text-white font-semibold transition-all duration-200 ease-in-out;
 	}
 
 	form {
@@ -57,6 +62,6 @@ code {
 	}
 
 	p.error {
-		@apply w-full mt-2 text-xs text-left text-red-500;
+		@apply w-full mt-2 text-xs font-medium text-left text-red-500;
 	}
 }

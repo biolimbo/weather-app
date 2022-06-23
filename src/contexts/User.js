@@ -23,15 +23,37 @@ export const UserProvider = ({ children }) => {
 				const data = await doc.data();
 				return { ...data, id: doc.id };
 			});
-			const docs = await Promise.all(docsPromises);
-			console.log("checking cities", docs);
-			setCities(docs);
+			let docs = await Promise.all(docsPromises);
+			docs = docs.sort(function (a, b) {
+				var textA = a.name.toUpperCase();
+				var textB = b.name.toUpperCase();
+				return textA < textB ? -1 : textA > textB ? 1 : 0;
+			});
+			await getCurrentWeather(docs);
 			setLoading(false);
 		} catch (err) {
 			console.error(err);
 			setLoading(false);
 			//alert("An error occured while fetching user data");
 		}
+	};
+
+	const getCurrentWeather = async (docs) => {
+		if (!docs.length) {
+			return;
+		}
+
+		const promises = docs.map(async (city) => {
+			const response = await fetch(
+				`http://api.weatherapi.com/v1/current.json?key=d884d9d738e24e7ab78224621222206&q=${city.name}`
+			);
+			const data = await response.json();
+			return { ...data, ...city };
+		});
+
+		const data = await Promise.all(promises);
+
+		setCities(data);
 	};
 
 	const addCity = async (city) => {
@@ -68,6 +90,7 @@ export const UserProvider = ({ children }) => {
 	};
 
 	useEffect(() => {
+		console.log("fetching user cities");
 		fetchUserCities();
 	}, [user]);
 

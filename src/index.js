@@ -1,14 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 import "./index.css";
 
 import Navbar from "./components/Navbar";
-import PrivateRoute from "./routes/PrivateRoutes";
+import LoadingScreen from "./components/LoadingScreen";
 
+import PrivateRoute from "./routes/PrivateRoutes";
 import Reports from "./routes/Reports";
 import Alerts from "./routes/Alerts";
-
 import Profile from "./routes/Profile";
 import Signin from "./routes/Signin";
 import Signup from "./routes/Signup";
@@ -24,9 +25,13 @@ root.render(
 	<React.StrictMode>
 		<AuthProvider>
 			<UserProvider>
-				<div id="body" className="bg-gradient-to-t from-cyan-500 to-blue-500">
+				<div
+					id="body"
+					className="bg-gradient-to-t from-cyan-500 to-blue-500 pt-[76px]"
+				>
 					<Router>
 						<Navbar />
+						<LoadingScreen />
 						<Routes>
 							<Route
 								path="/"

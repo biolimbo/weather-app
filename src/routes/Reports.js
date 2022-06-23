@@ -1,12 +1,10 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import SVG from "react-inlinesvg";
 
-import { AuthContext } from "../contexts/Auth";
 import { UserContext } from "../contexts/User";
 function Reports() {
-	const { user, loading } = useContext(AuthContext);
-	const { cities, addCity } = useContext(UserContext);
+	const { cities, addCity, loading } = useContext(UserContext);
 
 	const [generalError, setGeneralError] = useState("");
 
@@ -56,18 +54,15 @@ function Reports() {
 	};
 
 	const onSubmit = async (data) => {
+		if (submitLoading) return;
 		setSubmitLoading(true);
-		console.log("CHECKING SUBMISSION", data);
 		await addCity(data);
 		setSubmitLoading(false);
 	};
 
-	useEffect(() => {
-		if (loading) return;
-	}, [user, loading]);
 	return (
 		<div className="z-10 grid grid-cols-1 md:grid-cols-2  gap-4 items-center relative w-full p-6 max-w-5xl mx-auto">
-			<div className="flex flex-col h-full rounded-xl gap-y-2 p-6 w-full bg-gray-200/75 backdrop-blur-md text-sky-800 items-center">
+			<div className="z-20 flex flex-col h-full rounded-xl gap-y-2 p-6 w-full bg-gray-200/75 backdrop-blur-md text-sky-700 items-center">
 				<h1 className="">Add City</h1>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<div className="w-full z-20">
@@ -90,7 +85,7 @@ function Reports() {
 									setTimeout(() => {
 										//console.log("CHECKING");
 										setIsInputFocused(false);
-									}, 200);
+									}, 150);
 								}}
 							/>
 							{cityOptionsLoading && (
@@ -120,28 +115,43 @@ function Reports() {
 						{errors.name && <p className="error">{errors.name.message}</p>}
 					</div>
 
-					<button type="submit" className="relative btn-sky-600">
-						<span className={submitLoading ? "opacity-0" : "opacity-100"}>
+					<button
+						type="submit"
+						className="relative btn-sky-600"
+						disabled={submitLoading}
+					>
+						<span
+							className={`transition-all duration-200 ease-in-out ${
+								submitLoading ? "opacity-0" : "opacity-100"
+							}`}
+						>
 							Add
 						</span>
-						{submitLoading && (
-							<SVG
-								src="/images/icons/loading.svg"
-								className="text-white w-6  h-6 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20"
-							/>
-						)}
+						<SVG
+							src="/images/icons/loading.svg"
+							className={`text-white w-6  h-6 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20 transition-all duration-200 ease-in-out ${
+								submitLoading ? "opacity-100" : "opacity-0"
+							}`}
+						/>
 					</button>
 					{generalError && <p className="error">{generalError}</p>}
 				</form>
 			</div>
-			{cities.map((city) => (
-				<div
-					key={city.id}
-					className="flex flex-col h-full rounded-xl gap-y-2 p-6 w-full bg-gray-200/75 backdrop-blur-md text-sky-800 items-center"
-				>
-					<h1 className="">{city.name}</h1>
-				</div>
-			))}
+			{loading ? (
+				<SVG
+					src="/images/icons/loading.svg"
+					className="text-white w-32 h-32 mx-auto mt-16"
+				/>
+			) : (
+				cities.map((city) => (
+					<div
+						key={city.id}
+						className="flex flex-col h-full rounded-xl gap-y-2 p-6 w-full bg-gray-200/75 backdrop-blur-md text-sky-700 items-center"
+					>
+						<h2 className="h1">{city.name}</h2>
+					</div>
+				))
+			)}
 		</div>
 	);
 }
