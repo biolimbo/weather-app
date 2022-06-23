@@ -159,7 +159,7 @@ export const UserProvider = ({ children }) => {
 				headers: myHeaders,
 			};
 			const response = await fetch(
-				`http://api.weatherapi.com/v1/current.json?key=d884d9d738e24e7ab78224621222206&q=${
+				`https://api.weatherapi.com/v1/current.json?key=d884d9d738e24e7ab78224621222206&q=${
 					city.name
 				}&seed=${Math.random()}`,
 				myInit

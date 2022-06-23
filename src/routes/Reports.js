@@ -46,7 +46,7 @@ function Reports() {
 			return;
 		}
 		const response = await fetch(
-			`http://api.weatherapi.com/v1/search.json?key=d884d9d738e24e7ab78224621222206&q=${city}`
+			`https://api.weatherapi.com/v1/search.json?key=d884d9d738e24e7ab78224621222206&q=${city}`
 		);
 		const data = await response.json();
 		if (data.cod === "404") {
