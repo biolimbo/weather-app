@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import SVG from "react-inlinesvg";
 
 import { UserContext } from "../contexts/User";
+
 function Reports() {
 	const { cities, addCity, loading } = useContext(UserContext);
 
@@ -61,9 +62,9 @@ function Reports() {
 	};
 
 	return (
-		<div className="z-10 grid grid-cols-1 md:grid-cols-2  gap-4 items-center relative w-full p-6 max-w-5xl mx-auto">
-			<div className="z-20 flex flex-col h-full rounded-xl gap-y-2 p-6 w-full bg-gray-200/75 backdrop-blur-md text-sky-700 items-center">
-				<h1 className="">Add City</h1>
+		<div className="z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-center relative w-full p-6 max-w-5xl mx-auto">
+			<div className="z-20 report-container">
+				<h1 className="w-full drop-shadow ">Add City</h1>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<div className="w-full z-20">
 						<label>City Name</label>
@@ -146,9 +147,35 @@ function Reports() {
 				cities.map((city) => (
 					<div
 						key={city.id}
-						className="flex flex-col h-full rounded-xl gap-y-2 p-6 w-full bg-gray-200/75 backdrop-blur-md text-sky-700 items-center"
+						className={`report-container  hover:scale-105 scale-100 select-none cursor-pointer ${
+							city.current?.is_day ? "day-container" : "night-container"
+						}`}
 					>
-						<h2 className="h1">{city.name}</h2>
+						<h2 className="h1 drop-shadow w-full">{city.name}</h2>
+						<div className="absolute top-0 right-0 w-16 h-auto m-3">
+							<img
+								src={"https:" + city.current?.condition?.icon}
+								alt={city.current?.condition?.text}
+								className="w-full h-full"
+							/>
+						</div>
+						<p className="w-full text-[2.5rem] leading-snug font-semibold">
+							{city.current?.temp_c + "°"}
+						</p>
+						<div className="w-full flex flex-col mt-auto">
+							<div className="flex items-center">
+								<SVG className="w-4 h-auto" src="/images/icons/humidity.svg" />
+								<p className="ml-2">{city.current?.humidity + "%"}</p>
+							</div>
+							<div className="flex items-center">
+								<SVG className="w-4 h-auto" src="/images/icons/wind.svg" />
+								<p className="ml-2">{city.current?.wind_kph + " kph"}</p>
+							</div>
+							<div className="flex items-center">
+								<SVG className="w-4 h-auto" src="/images/icons/clock.svg" />
+								<p className="ml-2">{city.location?.localtime}</p>
+							</div>
+						</div>
 					</div>
 				))
 			)}

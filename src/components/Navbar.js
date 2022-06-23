@@ -37,7 +37,7 @@ function Navbar() {
 
 	return (
 		<header className="fixed z-50 w-full top-0">
-			<nav className="px-3 sm:px-6 py-4 rounded-b-lg bg-sky-800/[.65] backdrop-blur-md drop-shadow-md">
+			<nav className="px-3 sm:px-6 py-4 rounded-b-lg bg-gradient-to-b  from-sky-700/90 to-sky-600/60 backdrop-blur-md drop-shadow-md">
 				<div className="container flex flex-wrap justify-between items-center mx-auto">
 					<Link to="/" className="flex items-center">
 						<img

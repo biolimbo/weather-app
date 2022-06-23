@@ -27,7 +27,7 @@ root.render(
 			<UserProvider>
 				<div
 					id="body"
-					className="bg-gradient-to-t from-cyan-500 to-blue-500 pt-[76px]"
+					className="bg-gradient-to-t from-slate-400 to-slate-300 pt-[76px]"
 				>
 					<Router>
 						<Navbar />

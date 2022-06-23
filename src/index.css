@@ -50,7 +50,7 @@ code {
 	}
 
 	form {
-		@apply w-full px-4 mt-2 flex flex-col items-center gap-y-4;
+		@apply w-full mt-2 flex flex-col gap-y-4;
 	}
 
 	label {
@@ -63,5 +63,17 @@ code {
 
 	p.error {
 		@apply w-full mt-2 text-xs font-medium text-left text-red-500;
+	}
+
+	.report-container {
+		@apply flex flex-col h-full rounded-xl gap-y-3 py-6 px-8 w-full bg-gray-200/75 text-slate-800 backdrop-blur-md drop-shadow-lg items-center min-h-[215px] transition-all duration-500 ease-in-out;
+	}
+
+	.day-container {
+		@apply bg-gradient-to-b from-sky-600/90 to-sky-500/60;
+	}
+
+	.night-container {
+		@apply bg-gradient-to-b from-slate-900/90 to-sky-800/60 text-white;
 	}
 }
