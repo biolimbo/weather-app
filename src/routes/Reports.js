@@ -1,17 +1,30 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import SVG from "react-inlinesvg";
 
 import { UserContext } from "../contexts/User";
 
 import Alerts from "../components/Alerts";
+import ReportContainer from "../components/ReportContainer";
 
 function Reports() {
-	const { cities, city, addCity, setCity, loading } = useContext(UserContext);
+	const {
+		alerts,
+		cities,
+		city,
+		addCity,
+		fetchUserCities,
+		loading,
+		fetchAllAlerts,
+		triggerAlerts,
+	} = useContext(UserContext);
+
+	const searchInput = useRef(null);
 
 	const [generalError, setGeneralError] = useState("");
 
-	const searchInput = useRef(null);
+	const [seed, setSeed] = useState(Math.random());
+
 	const [isInputFocused, setIsInputFocused] = useState(false);
 	const [cityOptions, setCityOptions] = useState([]);
 	const [cityOptionsLoading, setCityOptionsLoading] = useState(false);
@@ -63,6 +76,21 @@ function Reports() {
 		setSubmitLoading(false);
 	};
 
+	useEffect(() => {
+		fetchAllAlerts();
+	}, [cities, seed]);
+
+	useEffect(() => {
+		triggerAlerts();
+	}, [alerts]);
+
+	useEffect(() => {
+		setInterval(async () => {
+			await fetchUserCities();
+			setSeed(Math.random());
+		}, 60000);
+	}, []);
+
 	return (
 		<>
 			{city && <Alerts />}
@@ -110,7 +138,7 @@ function Reports() {
 													selectCity(city.name);
 												}}
 											>
-												{city.name}
+												{city.name}, {city.country}
 											</p>
 										))}
 									</div>
@@ -142,7 +170,7 @@ function Reports() {
 						{generalError && <p className="error">{generalError}</p>}
 					</form>
 				</div>
-				{loading ? (
+				{loading && !cities.length ? (
 					<div className="min-h-[215px] w-full flex justify-center items-center">
 						<SVG
 							src="/images/icons/loading.svg"
@@ -150,46 +178,7 @@ function Reports() {
 						/>
 					</div>
 				) : (
-					cities.map((city) => (
-						<div
-							key={city.id}
-							className={`report-container  hover:scale-105 scale-100 select-none cursor-pointer ${
-								city.current?.is_day ? "day-container" : "night-container"
-							}`}
-							onClick={() => {
-								setCity(city);
-							}}
-						>
-							<h2 className="h1 drop-shadow w-full">{city.name}</h2>
-							<div className="absolute top-0 right-0 w-16 h-auto m-3">
-								<img
-									src={"https:" + city.current?.condition?.icon}
-									alt={city.current?.condition?.text}
-									className="w-full h-full"
-								/>
-							</div>
-							<p className="w-full text-[2.5rem] leading-snug font-semibold">
-								{city.current?.temp_c + "°"}
-							</p>
-							<div className="w-full flex flex-col mt-auto">
-								<div className="flex items-center">
-									<SVG
-										className="w-4 h-auto"
-										src="/images/icons/humidity.svg"
-									/>
-									<p className="ml-2">{city.current?.humidity + "%"}</p>
-								</div>
-								<div className="flex items-center">
-									<SVG className="w-4 h-auto" src="/images/icons/wind.svg" />
-									<p className="ml-2">{city.current?.wind_kph + " kph"}</p>
-								</div>
-								<div className="flex items-center">
-									<SVG className="w-4 h-auto" src="/images/icons/clock.svg" />
-									<p className="ml-2">{city.location?.localtime}</p>
-								</div>
-							</div>
-						</div>
-					))
+					cities.map((city) => <ReportContainer key={city.id} city={city} />)
 				)}
 			</div>
 		</>

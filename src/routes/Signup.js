@@ -25,8 +25,9 @@ function Register() {
 		if (user) navigate("/", { replace: true });
 	}, [user, loading]);
 	return (
-		<div className="register">
-			<div className="register__container">
+		<div className=" w-full flex justify-center relative">
+			<div className="flex flex-col rounded-xl gap-y-3 p-6 my-4 mx-4 max-w-md bg-gray-200/75 backdrop-blur-md drop-shadow-md text-sky-800 items-center">
+				<h1 className=" mb-3">Log in</h1>
 				<input
 					type="text"
 					className="register__textBox"
@@ -48,17 +49,14 @@ function Register() {
 					onChange={(e) => setPassword(e.target.value)}
 					placeholder="Password"
 				/>
-				<button className="register__btn" onClick={register}>
+				<button className=" btn-sky-600" onClick={register}>
 					Register
 				</button>
-				<button
-					className="register__btn register__google"
-					onClick={signInWithGoogle}
-				>
+				<button className=" btn-sky-600" onClick={signInWithGoogle}>
 					Register with Google
 				</button>
 				<div>
-					Already have an account? <Link to="/signin">Login</Link> now.
+					Already have an account? <Link to="/signin">Login now</Link>.
 				</div>
 			</div>
 		</div>

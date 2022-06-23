@@ -67,7 +67,7 @@ function Alerts() {
 							>
 								<option disabled>Alert type</option>
 								<option value="greater">Temperature greater than</option>
-								<option value="minor">Temperature lower than</option>
+								<option value="lower">Temperature lower than</option>
 							</select>
 							<input
 								placeholder="Value"
@@ -106,7 +106,7 @@ function Alerts() {
 								);
 							})}
 					</form>
-					{alerts?.[city.name.replaceAll(" ", "")]?.map((alert) => {
+					{alerts?.[city.name.replaceAll(" ", "_")]?.map((alert) => {
 						return (
 							<div
 								key={`aler-${alert.id}`}
@@ -115,7 +115,7 @@ function Alerts() {
 								<select defaultValue={alert.type} disabled={true}>
 									<option disabled>Alert type</option>
 									<option value="greater">Temperature greater than</option>
-									<option value="minor">Temperature lower than</option>
+									<option value="lower">Temperature lower than</option>
 								</select>
 								<input
 									placeholder="Value"

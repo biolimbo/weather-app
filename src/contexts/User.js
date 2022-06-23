@@ -22,8 +22,71 @@ export const UserProvider = ({ children }) => {
 	const [city, setCity] = useState(null);
 
 	const [alerts, setAlerts] = useState({});
+	const [activeAlerts, setActiveAlerts] = useState({});
 
 	const [loading, setLoading] = useState(true);
+
+	const fetchAllAlerts = async () => {
+		try {
+			if (!user) return;
+			let newAlerts = {};
+			const promises = cities.map(async (city) => {
+				const result = await fetchCityAlerts(city);
+				newAlerts = { ...newAlerts, ...result };
+				return result;
+			});
+			await Promise.all(promises);
+			setAlerts(newAlerts);
+		} catch (err) {
+			console.error(err);
+			//alert("An error occured while fetching user data");
+		}
+	};
+
+	const triggerAlerts = () => {
+		try {
+			if (!user) return;
+			let newActiveAlerts = {};
+			Object.keys(alerts).forEach((key) => {
+				const currentCity = cities.find((city) => city.name === key);
+
+				const cityAlerts = alerts[key];
+
+				const activeCityAlerts = cityAlerts.filter((alert) => {
+					let active = null;
+
+					switch (alert.type) {
+						case "greater":
+							active =
+								Number(alert.value) < Number(currentCity?.current?.temp_c ?? 0);
+							break;
+						case "lower":
+							active =
+								Number(alert.value) > Number(currentCity?.current?.temp_c ?? 0);
+							break;
+					}
+
+					/* console.log(
+						"active",
+						active,
+						alert.type,
+						alert.value,
+						currentCity.current.temp_c
+					); */
+
+					return active ? alert : null;
+				});
+
+				newActiveAlerts[key] = activeCityAlerts;
+			});
+
+			setActiveAlerts(newActiveAlerts);
+		} catch (err) {
+			console.error(err);
+			//alert("An error occured while fetching user data");
+			setActiveAlerts({});
+		}
+	};
 
 	const fetchCityAlerts = async (cityToFetch) => {
 		try {
@@ -44,7 +107,12 @@ export const UserProvider = ({ children }) => {
 				var valueB = b.value;
 				return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
 			});
-			setAlerts({ ...alerts, [cityToFetch.name.replaceAll(" ", "")]: docs });
+			const newAlerts = {
+				...alerts,
+				[cityToFetch.name.replaceAll(" ", "_")]: docs,
+			};
+			setAlerts(newAlerts);
+			return newAlerts;
 		} catch (err) {
 			console.error(err);
 			//alert("An error occured while fetching user data");
@@ -82,8 +150,19 @@ export const UserProvider = ({ children }) => {
 		}
 
 		const promises = docs.map(async (city) => {
+			var myHeaders = new Headers();
+			myHeaders.append("pragma", "no-cache");
+			myHeaders.append("cache-control", "no-cache");
+
+			var myInit = {
+				method: "GET",
+				headers: myHeaders,
+			};
 			const response = await fetch(
-				`http://api.weatherapi.com/v1/current.json?key=d884d9d738e24e7ab78224621222206&q=${city.name}`
+				`http://api.weatherapi.com/v1/current.json?key=d884d9d738e24e7ab78224621222206&q=${
+					city.name
+				}&seed=${Math.random()}`,
+				myInit
 			);
 			const data = await response.json();
 			return { ...data, ...city };
@@ -173,7 +252,14 @@ export const UserProvider = ({ children }) => {
 	};
 
 	useEffect(() => {
-		if (user) fetchUserCities();
+		if (user) {
+			fetchUserCities();
+		} else {
+			setCities([]);
+			setCity(null);
+			setAlerts({});
+			setActiveAlerts({});
+		}
 	}, [user]);
 
 	useEffect(() => {
@@ -189,9 +275,14 @@ export const UserProvider = ({ children }) => {
 				removeCity,
 				city,
 				setCity,
+				fetchUserCities,
 				alerts,
+				activeAlerts,
 				addAlert,
 				removeAlert,
+				fetchAllAlerts,
+				triggerAlerts,
+				setActiveAlerts,
 			}}
 		>
 			{children}
