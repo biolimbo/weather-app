@@ -9,6 +9,7 @@ import PrivateRoute from "./routes/PrivateRoutes";
 import Reports from "./routes/Reports";
 import Alerts from "./routes/Alerts";
 
+import Profile from "./routes/Profile";
 import Signin from "./routes/Signin";
 import Signup from "./routes/Signup";
 import Reset from "./routes/Reset";
@@ -16,37 +17,48 @@ import Reset from "./routes/Reset";
 import reportWebVitals from "./reportWebVitals";
 
 import { AuthProvider } from "./contexts/Auth";
+import { UserProvider } from "./contexts/User";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<React.StrictMode>
 		<AuthProvider>
-			<div id="body" className="bg-gradient-to-t from-cyan-500 to-blue-500">
-				<Router>
-					<Navbar />
-					<Routes>
-						<Route
-							path="/"
-							element={
-								<PrivateRoute>
-									<Reports />
-								</PrivateRoute>
-							}
-						/>
-						<Route
-							path="/alerts"
-							element={
-								<PrivateRoute>
-									<Alerts />
-								</PrivateRoute>
-							}
-						/>
-						<Route path="/signin" element={<Signin />} />
-						<Route path="/signup" element={<Signup />} />
-						<Route path="/reset" element={<Reset />} />
-					</Routes>
-				</Router>
-			</div>
+			<UserProvider>
+				<div id="body" className="bg-gradient-to-t from-cyan-500 to-blue-500">
+					<Router>
+						<Navbar />
+						<Routes>
+							<Route
+								path="/"
+								element={
+									<PrivateRoute>
+										<Reports />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="/alerts"
+								element={
+									<PrivateRoute>
+										<Alerts />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="/profile"
+								element={
+									<PrivateRoute>
+										<Profile />
+									</PrivateRoute>
+								}
+							/>
+							<Route path="/signin" element={<Signin />} />
+							<Route path="/signup" element={<Signup />} />
+							<Route path="/reset" element={<Reset />} />
+						</Routes>
+					</Router>
+				</div>
+			</UserProvider>
 		</AuthProvider>
 	</React.StrictMode>
 );
