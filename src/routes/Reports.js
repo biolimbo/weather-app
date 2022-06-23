@@ -92,7 +92,7 @@ function Reports() {
 							{cityOptionsLoading && (
 								<SVG
 									src="/images/icons/loading.svg"
-									className="text-sky-600 w-6  h-6 absolute top-1/2 -translate-y-1/2 right-2 z-20"
+									className="w-6  h-6 absolute top-1/2 -translate-y-1/2 right-2 z-20"
 								/>
 							)}
 
@@ -130,7 +130,7 @@ function Reports() {
 						</span>
 						<SVG
 							src="/images/icons/loading.svg"
-							className={`text-white w-6  h-6 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20 transition-all duration-200 ease-in-out ${
+							className={` w-6  h-6 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20 transition-all duration-200 ease-in-out ${
 								submitLoading ? "opacity-100" : "opacity-0"
 							}`}
 						/>
@@ -139,10 +139,12 @@ function Reports() {
 				</form>
 			</div>
 			{loading ? (
-				<SVG
-					src="/images/icons/loading.svg"
-					className="text-white w-32 h-32 mx-auto mt-16"
-				/>
+				<div className="min-h-[215px] w-full flex justify-center items-center">
+					<SVG
+						src="/images/icons/loading.svg"
+						className="text-slate-800 w-32 h-32"
+					/>
+				</div>
 			) : (
 				cities.map((city) => (
 					<div

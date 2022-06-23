@@ -9,7 +9,6 @@ import LoadingScreen from "./components/LoadingScreen";
 
 import PrivateRoute from "./routes/PrivateRoutes";
 import Reports from "./routes/Reports";
-import Alerts from "./routes/Alerts";
 import Profile from "./routes/Profile";
 import Signin from "./routes/Signin";
 import Signup from "./routes/Signup";
@@ -38,14 +37,6 @@ root.render(
 								element={
 									<PrivateRoute>
 										<Reports />
-									</PrivateRoute>
-								}
-							/>
-							<Route
-								path="/alerts"
-								element={
-									<PrivateRoute>
-										<Alerts />
 									</PrivateRoute>
 								}
 							/>
