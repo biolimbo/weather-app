@@ -49,6 +49,10 @@ code {
 		@apply bg-sky-600 hover:bg-sky-800 hover:drop-shadow-md w-fit rounded-lg px-4 py-2 text-white font-semibold transition-all duration-200 ease-in-out;
 	}
 
+	.btn-rose-600 {
+		@apply bg-rose-600 hover:bg-rose-800 hover:drop-shadow-md w-fit rounded-lg px-4 py-2 text-white font-semibold transition-all duration-200 ease-in-out;
+	}
+
 	form {
 		@apply w-full mt-2 flex flex-col gap-y-4;
 	}
@@ -57,8 +61,9 @@ code {
 		@apply block mb-2 text-sm font-bold text-gray-700;
 	}
 
-	input {
-		@apply w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:ring-2 focus:ring-sky-400;
+	input,
+	select {
+		@apply w-full px-3 py-2 text-sm leading-tight bg-white text-gray-800 disabled:opacity-70 disabled:text-gray-500 border rounded shadow appearance-none focus:outline-none focus:ring-2 focus:ring-sky-400;
 	}
 
 	p.error {

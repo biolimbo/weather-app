@@ -30,7 +30,8 @@ export const UserProvider = ({ children }) => {
 			if (!user) return;
 			const q = query(
 				collection(db, "alerts"),
-				where("uid", "==", cityToFetch?.id)
+				where("uid", "==", user?.uid),
+				where("cityid", "==", cityToFetch?.id)
 			);
 			const docsQuery = await getDocs(q);
 			const docsPromises = docsQuery.docs.map(async (doc) => {
@@ -43,7 +44,7 @@ export const UserProvider = ({ children }) => {
 				var valueB = b.value;
 				return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
 			});
-			setAlerts({ ...alerts, [cityToFetch.name]: docs });
+			setAlerts({ ...alerts, [cityToFetch.name.replaceAll(" ", "")]: docs });
 		} catch (err) {
 			console.error(err);
 			//alert("An error occured while fetching user data");
@@ -172,8 +173,12 @@ export const UserProvider = ({ children }) => {
 	};
 
 	useEffect(() => {
-		fetchUserCities();
+		if (user) fetchUserCities();
 	}, [user]);
+
+	useEffect(() => {
+		if (city) fetchCityAlerts(city);
+	}, [city]);
 
 	return (
 		<UserContext.Provider
